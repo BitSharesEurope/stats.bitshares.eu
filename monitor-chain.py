@@ -39,9 +39,7 @@ class Config(GrapheneWebsocketProtocol):
         for span in [15, 30, 60, 5 * 60, 60 * 60]:
             numBlocks = int(span / blockInterval)
             tps["span-%d" % span] = "%.3f" % (
-                sum([numtxs[a] for a in range(0, numBlocks)]) /
-                float(span) /
-                blockInterval
+                sum([numtxs[a] for a in range(0, numBlocks)]) / float(span)
             )
         notice["tps"] = tps
 
