@@ -5,6 +5,7 @@ import redis
 import json
 from collections import deque
 import re
+import time
 
 windowLength = 1200
 numtxs = deque([0] * windowLength, windowLength)
@@ -29,7 +30,12 @@ class Config(GrapheneWebsocketProtocol):
         print("new block %d" % notice["head_block_number"])
         witness = client.ws.get_account(notice["current_witness"])
         account = client.ws.get_account(witness["witness_account"])
-        block = client.ws.get_block(notice["head_block_number"])
+        block = None
+        while not block:
+            block = client.ws.get_block(notice["head_block_number"])
+            if not block:
+                print("couldn't get block, trying again")
+                time.sleep(1)
 
         notice["num_transactions"] = len(block["transactions"])
         numtxs.appendleft(len(block["transactions"]))

@@ -2,7 +2,7 @@
 
 import json
 import time
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session, request, redirect
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
@@ -39,6 +39,11 @@ def on_join(room):
 @socketio.on('leave', namespace='/status')
 def on_leave(room):
     leave_room(room)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return redirect("/", code=302)
 
 
 if __name__ == '__main__':
