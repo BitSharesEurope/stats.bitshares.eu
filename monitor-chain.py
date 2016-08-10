@@ -1,5 +1,5 @@
-from grapheneapi import GrapheneClient, GrapheneWebsocketProtocol
-from graphenebase import Memo, PrivateKey, PublicKey
+from grapheneapi.grapheneclient import GrapheneClient
+from grapheneapi.graphenewsprotocol import GrapheneWebsocketProtocol
 from flask_socketio import SocketIO
 import redis
 import json
