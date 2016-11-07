@@ -1,3 +1,4 @@
+import sys
 from grapheneapi.grapheneclient import GrapheneClient
 from grapheneapi.graphenewsprotocol import GrapheneWebsocketProtocol
 from flask_socketio import SocketIO
@@ -27,14 +28,14 @@ class Config(GrapheneWebsocketProtocol):
             return
         self.lastblock = notice["head_block_number"]
 
-        print("new block %d" % notice["head_block_number"])
+        print("new block %d" % notice["head_block_number"], flush=True)
         witness = client.ws.get_account(notice["current_witness"])
         account = client.ws.get_account(witness["witness_account"])
         block = None
         while not block:
             block = client.ws.get_block(notice["head_block_number"])
             if not block:
-                print("couldn't get block, trying again")
+                print("couldn't get block, trying again", flush=True)
                 time.sleep(1)
 
         notice["num_transactions"] = len(block["transactions"])
@@ -65,7 +66,7 @@ config = Config
 m = re.search('monitor-(.*).py', __file__)
 room = m.group(1)
 
-print("Serving room: " + room)
+print("Serving room: " + room, flush=True)
 
 if room == "gph":
     config.witness_url = "ws://localhost:8090/"

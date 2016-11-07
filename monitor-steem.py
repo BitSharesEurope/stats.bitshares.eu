@@ -11,7 +11,7 @@ windowLength = 1200
 numtxs = deque([0] * windowLength, windowLength)
 namespace = "/status"
 room = "steem"
-print("Serving room: " + room)
+print("Serving room: " + room, flush=True)
 
 client = SteemNodeRPC("wss://this.piston.rocks")
 socketio = SocketIO(message_queue='redis://')
