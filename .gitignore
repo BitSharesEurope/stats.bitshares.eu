@@ -1,0 +1,5 @@
+.*.swp
+src/
+__pycache__
+blocks.sqlite
+env/
