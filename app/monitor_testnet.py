@@ -2,7 +2,7 @@ from datetime import datetime
 from bitshares.bitshares import BitShares
 from bitshares.blockchain import Blockchain
 from flask_socketio import SocketIO
-from database import TestBlock
+from .database import TestBlock
 import redis
 namespace = "/status"
 room = "test"
@@ -10,7 +10,7 @@ socketio = SocketIO(message_queue='redis://')
 testnet = BitShares(node="wss://testnet.bitshares.eu/ws")
 
 
-if __name__ == "__main__":
+def run():
     for block in Blockchain(mode="head").blocks():
         timestamp = int(datetime.strptime(block["timestamp"], '%Y-%m-%dT%H:%M:%S').timestamp())
         num_ops = sum([len(tx["operations"]) for tx in block["transactions"]])
@@ -28,3 +28,7 @@ if __name__ == "__main__":
             namespace=namespace,
             room=room,
             broadcast=True)
+
+
+if __name__ == "__main__":
+    run()
