@@ -9,3 +9,4 @@ Jinja2==2.7.3
 python-socketio
 sqlalchemy
 gunicorn
+pyyaml
