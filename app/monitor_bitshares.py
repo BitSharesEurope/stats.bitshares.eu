@@ -7,7 +7,7 @@ import redis
 namespace = "/status"
 room = "bts"
 socketio = SocketIO(message_queue='redis://')
-bitshares = BitShares(node="wss://testnet.bitshares.eu/ws")
+bitshares = BitShares(node="wss://this.uptick.rocks/")
 
 
 def run():
