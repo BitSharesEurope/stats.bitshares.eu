@@ -1,3 +1,0 @@
-# sql_database: "mysql://peermit_devel:mKKatn97eUJT3eH9@streemian.com/peermit_devel"
-
-sql_database: sqlite:///blocks.sqlite

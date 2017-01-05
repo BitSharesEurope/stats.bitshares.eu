@@ -2,8 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from .config import config
 Base = declarative_base()
-engine = create_engine('sqlite:///blocks.sqlite', echo=False)
+engine = create_engine(config["sql_database"])
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -13,10 +14,12 @@ class BTSBlock(Base):
 
     id = Column(Integer, primary_key=True)
     timestamp = Column(Integer)
+    block_num = Column(Integer)
     num_txs = Column(Integer)
     num_ops = Column(Integer)
 
-    def __init__(self, timestamp, num_txs, num_ops):
+    def __init__(self, timestamp, block_num, num_txs, num_ops):
+        self.block_num = block_num
         self.timestamp = timestamp
         self.num_txs = num_txs
         self.num_ops = num_ops
@@ -30,10 +33,12 @@ class TestBlock(Base):
 
     id = Column(Integer, primary_key=True)
     timestamp = Column(Integer)
+    block_num = Column(Integer)
     num_txs = Column(Integer)
     num_ops = Column(Integer)
 
-    def __init__(self, timestamp, num_txs, num_ops):
+    def __init__(self, timestamp, block_num, num_txs, num_ops):
+        self.block_num = block_num
         self.timestamp = timestamp
         self.num_txs = num_txs
         self.num_ops = num_ops
@@ -47,10 +52,12 @@ class SteemBlock(Base):
 
     id = Column(Integer, primary_key=True)
     timestamp = Column(Integer)
+    block_num = Column(Integer)
     num_txs = Column(Integer)
     num_ops = Column(Integer)
 
-    def __init__(self, timestamp, num_txs, num_ops):
+    def __init__(self, timestamp, block_num, num_txs, num_ops):
+        self.block_num = block_num
         self.timestamp = timestamp
         self.num_txs = num_txs
         self.num_ops = num_ops

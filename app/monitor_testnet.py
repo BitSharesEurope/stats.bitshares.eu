@@ -17,7 +17,7 @@ def run():
         timestamp = int(datetime.strptime(block["timestamp"], '%Y-%m-%dT%H:%M:%S').timestamp())
         num_ops = sum([len(tx["operations"]) for tx in block["transactions"]])
         num_txs = len(block["transactions"])
-        TestBlock(timestamp, num_txs, num_ops)
+        TestBlock(timestamp, block.get("block_num", None), num_txs, num_ops)
         notice = {
             "timestamp": timestamp,
             "num_transactions": num_txs,

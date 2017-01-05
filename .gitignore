@@ -3,3 +3,4 @@ src/
 __pycache__
 blocks.sqlite
 env/
+config.yml
