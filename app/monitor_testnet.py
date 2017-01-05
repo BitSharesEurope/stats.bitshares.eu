@@ -6,11 +6,11 @@ from .database import TestBlock
 import redis
 namespace = "/status"
 room = "test"
-socketio = SocketIO(message_queue='redis://')
-testnet = BitShares(node="wss://testnet.bitshares.eu/ws")
 
 
 def run():
+    socketio = SocketIO(message_queue='redis://')
+    testnet = BitShares(node="wss://testnet.bitshares.eu/ws")
     chain = Blockchain(mode="head", bitshares_instance=testnet)
     print(chain.bitshares.rpc.url)
     for block in chain.blocks():

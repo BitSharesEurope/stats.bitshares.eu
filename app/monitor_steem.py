@@ -5,10 +5,10 @@ from .database import SteemBlock
 import redis
 namespace = "/status"
 room = "steem"
-socketio = SocketIO(message_queue='redis://')
 
 
 def run():
+    socketio = SocketIO(message_queue='redis://')
     for block in Blockchain(mode="head").blocks():
         timestamp = int(datetime.strptime(block["timestamp"], '%Y-%m-%dT%H:%M:%S').timestamp())
         num_ops = sum([len(tx["operations"]) for tx in block["transactions"]])

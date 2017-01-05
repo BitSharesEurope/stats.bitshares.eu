@@ -6,11 +6,11 @@ from . database import BTSBlock
 import redis
 namespace = "/status"
 room = "bts"
-socketio = SocketIO(message_queue='redis://')
-bitshares = BitShares(node="wss://this.uptick.rocks/")
 
 
 def run():
+    socketio = SocketIO(message_queue='redis://')
+    bitshares = BitShares(node="wss://this.uptick.rocks/")
     chain = Blockchain(mode="head", bitshares_instance=bitshares)
     print(chain.bitshares.rpc.url)
     for block in chain.blocks():
