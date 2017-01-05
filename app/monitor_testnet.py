@@ -11,7 +11,9 @@ testnet = BitShares(node="wss://testnet.bitshares.eu/ws")
 
 
 def run():
-    for block in Blockchain(mode="head").blocks():
+    chain = Blockchain(mode="head", bitshares_instance=testnet)
+    print(chain.bitshares.rpc.url)
+    for block in chain.blocks():
         timestamp = int(datetime.strptime(block["timestamp"], '%Y-%m-%dT%H:%M:%S').timestamp())
         num_ops = sum([len(tx["operations"]) for tx in block["transactions"]])
         num_txs = len(block["transactions"])
