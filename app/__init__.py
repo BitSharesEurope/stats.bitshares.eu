@@ -61,7 +61,7 @@ def on_join(room):
         blocks = SteemBlock
     allblocks = [[
         b.timestamp, b.num_ops, b.num_txs
-    ] for b in session.query(blocks).limit(100).all()]
+    ] for b in blocks.recent()]
     socketio.emit(
         'init',
         sorted(allblocks, key=lambda x: x[0]),

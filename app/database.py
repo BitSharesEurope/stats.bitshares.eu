@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -27,6 +27,10 @@ class BTSBlock(Base):
             session.add(self)
             session.commit()
 
+    @staticmethod
+    def recent(n=100):
+        return session.query(BTSBlock).order_by(desc(BTSBlock.timestamp)).limit(n).all()
+
 
 class TestBlock(Base):
     __tablename__ = 'test_blocks'
@@ -46,6 +50,10 @@ class TestBlock(Base):
             session.add(self)
             session.commit()
 
+    @staticmethod
+    def recent(n=100):
+        return session.query(TestBlock).order_by(desc(TestBlock.timestamp)).limit(n).all()
+
 
 class SteemBlock(Base):
     __tablename__ = 'steem_blocks'
@@ -64,6 +72,10 @@ class SteemBlock(Base):
         if not session.query(SteemBlock).filter_by(timestamp=timestamp).first():
             session.add(self)
             session.commit()
+
+    @staticmethod
+    def recent(n=100):
+        return session.query(SteemBlock).order_by(desc(SteemBlock.timestamp)).limit(n).all()
 
 
 Base.metadata.create_all(engine)
