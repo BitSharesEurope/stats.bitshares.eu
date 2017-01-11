@@ -5,7 +5,7 @@ parser = argparse.ArgumentParser(
     description="Command line tool to manage the stats page"
 )
 
-parser.add_argument('network', choices=["bitshares", "steem", "test"])
+parser.add_argument('network', choices=["bitshares", "steem", "test", "web"])
 
 args = parser.parse_args()
 
@@ -18,3 +18,6 @@ elif args.network == "bitshares":
 elif args.network == "steem":
     from app import monitor_steem
     monitor_steem.run()
+elif args.network == "web":
+    from app import app
+    app.run(debug=True)

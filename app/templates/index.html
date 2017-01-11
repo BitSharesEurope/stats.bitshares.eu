@@ -3,29 +3,11 @@
 <head>
     <meta charset="UTF-8"> 
     <title>Stats</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script src="http://code.highcharts.com/stock/highstock.js"></script>
 </head>
 <body>
-  <h1>Real-time Throughput</h1>
-  <p>Select the network to listen to <select id="selectNetwork">
-      <option value="bts">BitShares</option>
-      <option value="test">BitShares Testnet</option>
-      <option value="steem">Steem</option>
-  </select></p>
-  <div id='hchart'></div>
+  <h1>Throughput</h1>
+  <img src="/charts/steem">
+  <img src="/charts/bitshares">
+  <img src="/charts/testnet">
 </body>
-
-<script src="{{ url_for('static', filename='hcharts.js') }}"></script>
-<script src="{{ url_for('static', filename='socketio.js') }}"></script>
-<script type="text/javascript" charset="utf-8">
-$(document).ready(function(){
-    $('#selectNetwork').change(function() {
-        room = $("#selectNetwork :selected").val();
-        console.log("Joining room " + room);
-        socket.emit("join", room);
-    });
-});
-</script>
 </html>

@@ -1,80 +1,41 @@
-import json
-import time
-from flask import Flask, render_template, request, redirect
-from flask_socketio import SocketIO, emit, join_room, leave_room
-from .database import session, BTSBlock, TestBlock, SteemBlock
-
-# from gevent import monkey
-# monkey.patch_all()
+import datetime
+import os
+import pygal
+from flask import Flask, render_template, request, redirect, url_for
+from .database import session, BTSBlock, TestBlock, SteemBlock, session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(
-    app,
-    message_queue='redis://'
-)
-rooms = ['bts', 'gph', 'test']
-namespace = "/status"
-
-
-def log(msg):
-    for room in rooms:
-        socketio.emit(
-            'log',
-            {"msg": msg},
-            namespace=namespace,
-            room=room,
-            broadcast=True)
+rootpath = os.path.dirname(os.path.abspath(__file__))
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', **locals())
+
+def plot(blocks):
+    chart = pygal.Line()
+    chart.x_labels = map(str, [
+        datetime.datetime.fromtimestamp(b.timestamp) for b in blocks
+    ])
+    chart.add('Transactions', [b.num_txs for b in blocks])
+    chart.add('Operations', [b.num_ops for b in blocks])
+    return chart.render_response()
 
 
-@socketio.on('connect', namespace='/status')
-def test_connect():
-    print('Client connected', request.sid)
+@app.route('/charts/steem')
+def steem():
+    blocks = session.query(SteemBlock).all()
+    return plot(blocks)
 
 
-@socketio.on('disconnect', namespace='/status')
-def test_disconnect():
-    print('Client disconnected', request.sid)
+@app.route('/charts/bitshares')
+def bitshares():
+    blocks = session.query(BTSBlock).all()
+    return plot(blocks)
 
 
-@socketio.on('join', namespace='/status')
-def on_join(room):
-    # Leave all rooms!
-    for r in rooms:
-        leave_room(r)
-
-    # Join only one room
-    join_room(room)
-    log("joined " + room)
-
-    # Send all the stored data for that room
-    if room == "bts":
-        blocks = BTSBlock
-    elif room == "test":
-        blocks = TestBlock
-    else:
-        blocks = SteemBlock
-    allblocks = [[
-        b.timestamp, b.num_ops, b.num_txs
-    ] for b in session.query(blocks).all()]
-    socketio.emit(
-        'init',
-        sorted(allblocks, key=lambda x: x[0]),
-        namespace=namespace,
-        room=room,
-        broadcast=True)
-
-
-@socketio.on('leave', namespace='/status')
-def on_leave(room):
-    leave_room(room)
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return redirect("/", code=302)
+@app.route('/charts/testnet')
+def testnet():
+    blocks = session.query(TestBlock).all()
+    return plot(blocks)
