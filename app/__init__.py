@@ -1,8 +1,9 @@
 import json
 import time
+from .config import config
 from flask import Flask, render_template, request, redirect
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, join_room, leave_room
-from .database import session, BTSBlock, TestBlock, SteemBlock
 
 # from gevent import monkey
 # monkey.patch_all()
@@ -13,8 +14,21 @@ socketio = SocketIO(
     app,
     message_queue='redis://'
 )
+
+app.config['SQLALCHEMY_DATABASE_URI'] = config["sql_database"]
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
 rooms = ['bts', 'gph', 'test']
 namespace = "/status"
+
+
+@app.before_first_request
+def before_first_request():
+    try:
+        db.create_all()
+    except Exception as e:
+        app.logger.warning(str(e))
 
 
 def log(msg):
@@ -44,6 +58,8 @@ def test_disconnect():
 
 @socketio.on('join', namespace='/status')
 def on_join(room):
+    from .database import BTSBlock, TestBlock, SteemBlock
+
     # Leave all rooms!
     for r in rooms:
         leave_room(r)

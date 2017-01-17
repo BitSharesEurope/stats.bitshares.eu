@@ -3,13 +3,10 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from .config import config
-Base = declarative_base()
-engine = create_engine(config["sql_database"])
-Session = sessionmaker(bind=engine)
-session = Session()
+from . import db
 
 
-class BTSBlock(Base):
+class BTSBlock(db.Model):
     __tablename__ = 'bts_blocks'
 
     id = Column(Integer, primary_key=True)
@@ -23,16 +20,16 @@ class BTSBlock(Base):
         self.timestamp = timestamp
         self.num_txs = num_txs
         self.num_ops = num_ops
-        if not session.query(BTSBlock).filter_by(timestamp=timestamp).first():
-            session.add(self)
-            session.commit()
+        if not db.session.query(BTSBlock).filter_by(timestamp=timestamp).first():
+            db.session.add(self)
+            db.session.commit()
 
     @staticmethod
     def recent(n=100):
-        return session.query(BTSBlock).order_by(desc(BTSBlock.timestamp)).limit(n).all()
+        return db.session.query(BTSBlock).order_by(desc(BTSBlock.timestamp)).limit(n).all()
 
 
-class TestBlock(Base):
+class TestBlock(db.Model):
     __tablename__ = 'test_blocks'
 
     id = Column(Integer, primary_key=True)
@@ -46,16 +43,16 @@ class TestBlock(Base):
         self.timestamp = timestamp
         self.num_txs = num_txs
         self.num_ops = num_ops
-        if not session.query(TestBlock).filter_by(timestamp=timestamp).first():
-            session.add(self)
-            session.commit()
+        if not db.session.query(TestBlock).filter_by(timestamp=timestamp).first():
+            db.session.add(self)
+            db.session.commit()
 
     @staticmethod
     def recent(n=100):
-        return session.query(TestBlock).order_by(desc(TestBlock.timestamp)).limit(n).all()
+        return db.session.query(TestBlock).order_by(desc(TestBlock.timestamp)).limit(n).all()
 
 
-class SteemBlock(Base):
+class SteemBlock(db.Model):
     __tablename__ = 'steem_blocks'
 
     id = Column(Integer, primary_key=True)
@@ -69,13 +66,10 @@ class SteemBlock(Base):
         self.timestamp = timestamp
         self.num_txs = num_txs
         self.num_ops = num_ops
-        if not session.query(SteemBlock).filter_by(timestamp=timestamp).first():
-            session.add(self)
-            session.commit()
+        if not db.session.query(SteemBlock).filter_by(timestamp=timestamp).first():
+            db.session.add(self)
+            db.session.commit()
 
     @staticmethod
     def recent(n=100):
-        return session.query(SteemBlock).order_by(desc(SteemBlock.timestamp)).limit(n).all()
-
-
-Base.metadata.create_all(engine)
+        return db.session.query(SteemBlock).order_by(desc(SteemBlock.timestamp)).limit(n).all()
