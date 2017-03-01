@@ -21,11 +21,7 @@
 <script src="{{ url_for('static', filename='socketio.js') }}"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function(){
-    var room = window.location.hash.substring(1) || "bts";
-    console.log("Joining room " + room);
-    socket.emit("join", room);
     $('#selectNetwork option[value="'+ room +'"]').prop("selected", true);
-
     $('#selectNetwork').change(function() {
         room = $("#selectNetwork :selected").val();
         console.log("Joining room " + room);

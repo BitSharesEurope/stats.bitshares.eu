@@ -1,11 +1,12 @@
 var namespace = 'status';
-var room = "bts";
+var room = window.location.hash.substring(1) || "bts";
 var conn_options = {
     'sync disconnect on unload':true,
     resource:'socket.io'
 };
 
-socket = io(window.location.href + namespace, conn_options);
+// socket = io(window.location.href + namespace, conn_options);
+socket = io("http://stats.bitshares.eu/" + namespace, conn_options);
 
 function connectToNetwork() {
     console.log("connecting...");
