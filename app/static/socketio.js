@@ -69,6 +69,10 @@ function connectToNetwork() {
         socket.emit("join", room);
         socket.emit("stats", room);
     });
+
+    setInterval(function(){
+         socket.emit("stats", room);
+    }, 5000);
 }
 
 $(document).ready(function(){
