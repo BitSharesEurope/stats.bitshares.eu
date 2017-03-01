@@ -5,6 +5,7 @@
 redis
 Flask==0.10.1
 Flask_SocketIO
+flask-sqlalchemy
 Jinja2==2.7.3
 python-socketio
 sqlalchemy

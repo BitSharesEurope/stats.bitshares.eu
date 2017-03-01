@@ -5,8 +5,7 @@ parser = argparse.ArgumentParser(
     description="Command line tool to manage the stats page"
 )
 
-parser.add_argument('network', choices=["bitshares", "steem", "test",
-    "web"])
+parser.add_argument('network', choices=["bitshares", "steem", "test", "web"])
 
 args = parser.parse_args()
 
