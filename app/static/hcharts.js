@@ -43,9 +43,12 @@ $('#hchart').highcharts({
                 this.series.name +
                 '</b><br/>' +
                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +
+                ' (#' +
+                this.block +
+                ')' +
                 '<br/>' +
                 '<b>T/O per second:</b> ' +
-                Highcharts.numberFormat(this.y, 2) / 3;
+                (Highcharts.numberFormat(this.y, 2) / 3).toFixed(2);
         }
     },
     legend: {

@@ -76,7 +76,7 @@ def on_join(room):
     else:
         blocks = SteemBlock
     allblocks = [[
-        b.timestamp, b.num_ops, b.num_txs
+        b.timestamp, b.num_ops, b.num_txs, b.block_num
     ] for b in blocks.recent()]
     socketio.emit(
         'init',

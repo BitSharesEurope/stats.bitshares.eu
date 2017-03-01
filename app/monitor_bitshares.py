@@ -19,6 +19,7 @@ def run():
         num_txs = len(block["transactions"])
         BTSBlock(timestamp, block.get("block_num", None), num_txs, num_ops)
         notice = {
+            "block": block.get("block_num", 0),
             "timestamp": timestamp,
             "num_transactions": num_txs,
             "num_operations": num_ops,
