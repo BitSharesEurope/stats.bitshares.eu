@@ -33,28 +33,41 @@ function connectToNetwork() {
              block: msg[i][3]
             });
         }
-        hchart.series[0].setData(series1);
-        hchart.series[1].setData(series2);
+        chart.options.data[0].dataPoints = series1;
+        chart.options.data[1].dataPoints = series2;
+        chart.render();		
     });
 
-    /*
     socket.on('notice', function(msg) {
-        hchart.series[0].addPoint({
+        chart.options.data[1].dataPoints.push({
+         x: msg["timestamp"] * 1000,
+         y: msg["num_operations"],
+         block: msg["block"], 
+        });
+        chart.options.data[0].dataPoints.push({
          x: msg["timestamp"] * 1000,
          y: msg["num_transactions"],
-         block: msg["block"]
-        }, true);
-        hchart.series[1].addPoint({
-         y: msg["timestamp"] * 1000,
-         y: msg["num_operations"],
-         block: msg["block"]
-        }, true);
+         block: msg["block"], 
+        });
+        chart.options.data[0].dataPoints.shift();				
+        chart.options.data[1].dataPoints.shift();				
+        chart.render();		
+
+        var date = new Date(msg["timestamp"] * 1000);
+        $("#time").html(date.toLocaleTimeString());
     });
-   */
+
+    socket.on('stats', function(d) {
+       $("#max_num_ops").html(d["max_num_ops"].toLocaleString());
+       $("#max_num_txs").html(d["max_num_txs"].toLocaleString());
+       $("#sum_ops").html(d["sum_ops"].toLocaleString());
+       $("#sum_txs").html(d["sum_txs"].toLocaleString());
+    });
 
     socket.on('connect', function() {
         console.log("connected");
         socket.emit("join", room);
+        socket.emit("stats", room);
     });
 }
 

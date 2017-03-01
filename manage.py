@@ -19,5 +19,5 @@ elif args.network == "steem":
     from app import monitor_steem
     monitor_steem.run()
 elif args.network == "web":
-    from app import app
-    app.run()
+    from app import socketio, app
+    socketio.run(app)

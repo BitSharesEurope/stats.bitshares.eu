@@ -44,7 +44,7 @@ $('#hchart').highcharts({
                 '</b><br/>' +
                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +
                 ' (#' +
-                this.block +
+                this.point.block +
                 ')' +
                 '<br/>' +
                 '<b>T/O per second:</b> ' +

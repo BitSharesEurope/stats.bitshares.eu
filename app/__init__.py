@@ -2,8 +2,9 @@ import json
 import time
 from .config import config
 from flask import Flask, render_template, request, redirect
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from sqlalchemy import func, desc
 
 # from gevent import monkey
 # monkey.patch_all()
@@ -76,7 +77,10 @@ def on_join(room):
     else:
         blocks = SteemBlock
     allblocks = [[
-        b.timestamp, b.num_ops, b.num_txs, b.block_num
+        b.timestamp,
+        b.num_ops,
+        b.num_txs,
+        b.block_num
     ] for b in blocks.recent()]
     socketio.emit(
         'init',
@@ -85,6 +89,36 @@ def on_join(room):
         room=room,
         broadcast=True)
 
+
+@socketio.on('stats', namespace='/status')
+def on_stats(room):
+    from .database import BTSBlock, TestBlock, SteemBlock
+    # Send all the stored data for that room
+    if room == "bts":
+        blocks = BTSBlock
+    elif room == "test":
+        blocks = TestBlock
+    else:
+        blocks = SteemBlock
+    query = db.session.query(
+        func.max(blocks.num_ops).label("max_num_ops"),
+        func.max(blocks.num_txs).label("max_num_txs"),
+        func.sum(blocks.num_ops).label("sum_ops"),
+        func.sum(blocks.num_ops).label("sum_txs"),
+    ).first()
+
+    socketio.emit(
+        'stats',
+        {
+            "max_num_ops": int(query.max_num_ops),
+            "max_num_txs": int(query.max_num_txs),
+            "sum_ops": int(query.sum_ops),
+            "sum_txs": int(query.sum_txs)
+        },
+        namespace=namespace,
+        room=room,
+        broadcast=True)
+    
 
 @socketio.on('leave', namespace='/status')
 def on_leave(room):
