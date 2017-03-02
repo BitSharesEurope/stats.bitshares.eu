@@ -81,7 +81,7 @@ def on_join(room):
         b.num_ops,
         b.num_txs,
         b.block_num
-    ] for b in blocks.recent()]
+    ] for b in blocks.recent(1000)]
     socketio.emit(
         'init',
         sorted(allblocks, key=lambda x: x[0]),
@@ -107,13 +107,25 @@ def on_stats(room):
         func.sum(blocks.num_ops).label("sum_txs"),
     ).first()
 
+    last = (
+        db.session.query(
+            func.avg(blocks.num_ops).label("avg_ops"),
+            func.avg(blocks.num_txs).label("avg_txs")
+        )
+        .order_by(blocks.timestamp.desc())
+        .limit(100)
+        .first()
+    )
+
     socketio.emit(
         'stats',
         {
             "max_num_ops": int(query.max_num_ops),
             "max_num_txs": int(query.max_num_txs),
             "sum_ops": int(query.sum_ops),
-            "sum_txs": int(query.sum_txs)
+            "sum_txs": int(query.sum_txs),
+            "avg_ops_100": float(last.avg_ops),
+            "avg_txs_100": float(last.avg_txs),
         },
         namespace=namespace,
         room=room,
