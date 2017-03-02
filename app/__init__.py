@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from sqlalchemy import func, desc
+from statistics import mean
 
 # from gevent import monkey
 # monkey.patch_all()
@@ -109,12 +110,12 @@ def on_stats(room):
 
     last = (
         db.session.query(
-            func.avg(blocks.num_ops).label("avg_ops"),
-            func.avg(blocks.num_txs).label("avg_txs")
+            blocks.num_ops,
+            blocks.num_txs
         )
         .order_by(blocks.timestamp.desc())
         .limit(100)
-        .first()
+        .all()
     )
 
     socketio.emit(
@@ -124,8 +125,8 @@ def on_stats(room):
             "max_num_txs": int(query.max_num_txs),
             "sum_ops": int(query.sum_ops),
             "sum_txs": int(query.sum_txs),
-            "avg_ops_100": float(last.avg_ops),
-            "avg_txs_100": float(last.avg_txs),
+            "avg_ops_100": float(mean([x.num_ops for x in last])),
+            "avg_txs_100": float(mean([x.num_txs for x in last])),
         },
         namespace=namespace,
         room=room,
