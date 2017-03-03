@@ -1,7 +1,6 @@
--e git://github.com/xeroc/python-graphenelib@feature/separation-gph-bts#egg=graphenelib
--e git://github.com/xeroc/python-steem@develop#egg=steem
--e git://github.com/xeroc/python-bitshares@develop#egg=bitshares
-
+graphenelib
+steem
+bitshares
 redis
 Flask==0.10.1
 Flask_SocketIO
