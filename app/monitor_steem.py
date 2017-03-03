@@ -12,7 +12,7 @@ def run():
     socketio = SocketIO(message_queue='redis://')
     steem = Steem("wss://steemd.steemit.com")
     chain = Blockchain(mode="head", steem_instance=steem)
-    print(chain.steem.rpc.url)
+    print(chain.steem.rpc.url, flush=True)
     for block in chain.blocks():
         timestamp = int(datetime.strptime(block["timestamp"], '%Y-%m-%dT%H:%M:%S').timestamp())
         num_ops = sum([len(tx["operations"]) for tx in block["transactions"]])
@@ -24,7 +24,7 @@ def run():
             "num_transactions": num_txs,
             "num_operations": num_ops,
         }
-        print(notice)
+        print(notice, flush=True)
         socketio.emit(
             'notice',
             notice,
