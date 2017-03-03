@@ -48,7 +48,9 @@
       </div>
      </div>
      <div class="label">
-      Sum Ops
+      Sum <span
+       data-position="bottom center"
+       data-tooltip="A transaction can carry multiple operations">Ops</span>
      </div>
     </div>
     <div class="ui mini orange statistic">
@@ -58,7 +60,9 @@
       </div>
      </div>
      <div class="label">
-      Sum Txs
+      Sum <span
+       data-position="bottom center"
+       data-tooltip="A block can carry multiple transactions">Txs</span>
      </div>
     </div>
    </div>
@@ -70,7 +74,9 @@
       </div>
      </div>
      <div class="label">
-      Max #ops
+      Max #<span
+       data-position="bottom center"
+       data-tooltip="A transaction can carry multiple operations">Ops</span>
      </div>
     </div>
     <div class="ui mini orange statistic">
@@ -80,7 +86,9 @@
       </div>
      </div>
      <div class="label">
-      Max #txs
+      Max #<span
+       data-position="bottom center"
+       data-tooltip="A block can carry multiple transactions">Txs</span>
      </div>
     </div>
     <div class="ui mini orange statistic">
@@ -90,7 +98,9 @@
       </div>
      </div>
      <div class="label">
-      Avg. #ops (last 100 blocks)
+      Avg. #<span
+       data-position="bottom center"
+       data-tooltip="A transaction can carry multiple operations">Ops</span> (last 100 blocks)
      </div>
     </div>
     <div class="ui mini orange statistic">
@@ -100,7 +110,9 @@
       </div>
      </div>
      <div class="label">
-      Avg. #txs (last 100 blocks)
+      Avg. #<span
+       data-position="bottom center"
+       data-tooltip="A block can carry multiple transactions">Txs</span> (last 100 blocks)
      </div>
     </div>
    </div>
@@ -121,6 +133,7 @@
          console.log("Joining room " + room);
          socket.emit("join", room);
      });
+     $('.tooltip').popup();
   });
  </script>
 </html>

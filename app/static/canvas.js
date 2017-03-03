@@ -12,14 +12,14 @@ var chart = new CanvasJS.Chart("hchart",{
   type: "line",
   showInLegend: true,
   legendText: "Operations",
-  toolTipContent: '<b>Operations</b><br />Block: <a href="https://cryptofresh.com/b/{block}">#{block}</a><br /># Ops: {y}',
+  toolTipContent: '<b>Operations</b><br />Block: #{block}<br /># Ops: {y}',
   xValueType: "dateTime",
   dataPoints: []
  }, {
   type: "line",
   showInLegend: true,
   legendText: "Transactions",
-  toolTipContent: '<b>Transactions</b><br />Block: <a href="https://cryptofresh.com/b/{block}">#{block}</a><br /># Txs: {y}',
+  toolTipContent: '<b>Transactions</b><br />Block: #{block}<br /># Txs: {y}',
   xValueType: "dateTime",
   dataPoints: []
  }]
