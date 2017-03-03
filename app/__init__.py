@@ -83,9 +83,13 @@ def on_join(room):
         b.num_txs,
         b.block_num
     ] for b in blocks.recent(1000)]
+    latestDelay = allblocks[-2][0] - allblocks[-1][0]
     socketio.emit(
         'init',
-        sorted(allblocks, key=lambda x: x[0]),
+        {
+            "data": sorted(allblocks, key=lambda x: x[0]),
+            "block_time": latestDelay
+        },
         namespace=namespace,
         room=room,
         broadcast=True)
@@ -131,7 +135,7 @@ def on_stats(room):
         namespace=namespace,
         room=room,
         broadcast=True)
-    
+
 
 @socketio.on('leave', namespace='/status')
 def on_leave(room):

@@ -16,12 +16,16 @@
      <option value="bts">BitShares</option>
      <option value="test">BitShares Testnet</option>
      <option value="steem">Steem</option>
-    </select></p>
+    </select>
+    <span id="loading_indicator" class="ui active inline mini loader" style="margin-left:2rem"></span>
+    </p>
    </div>
-   <div class="ui center aligned segment">
+   <div id="stats-segment" class="ui center aligned segment">
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="time"></div>
+      <div id="time">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Last block time
@@ -29,7 +33,9 @@
     </div>
     <div class="ui mini orange statistic">
      <div class="value">
-      3 sec
+      <span id="block_time">
+       <div class="ui active inline mini loader"></div>
+      </span>
      </div>
      <div class="label">
       Block confirmation time
@@ -37,7 +43,9 @@
     </div>
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="sum_ops"></div>
+      <div id="sum_ops">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Sum Ops
@@ -45,7 +53,9 @@
     </div>
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="sum_txs"></div>
+      <div id="sum_txs">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Sum Txs
@@ -55,7 +65,9 @@
    <div class="ui center aligned segment">
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="max_num_ops"></div>
+      <div id="max_num_ops">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Max #ops
@@ -63,7 +75,9 @@
     </div>
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="max_num_txs"></div>
+      <div id="max_num_txs">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Max #txs
@@ -71,7 +85,9 @@
     </div>
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="avg_ops_100"></div>
+      <div id="avg_ops_100">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Avg. #ops (last 100 blocks)
@@ -79,7 +95,9 @@
     </div>
     <div class="ui mini orange statistic">
      <div class="value">
-      <div id="avg_txs_100"></div>
+      <div id="avg_txs_100">
+       <div class="ui active inline mini loader"></div>
+      </div>
      </div>
      <div class="label">
       Avg. #txs (last 100 blocks)
@@ -98,6 +116,7 @@
   $(document).ready(function(){
      $('#selectNetwork option[value="'+ room +'"]').prop("selected", true);
      $('#selectNetwork').change(function() {
+         setLoading(1);
          room = $("#selectNetwork :selected").val();
          console.log("Joining room " + room);
          socket.emit("join", room);
