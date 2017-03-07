@@ -56,12 +56,12 @@ function connectToNetwork() {
     });
 
     socket.on('notice', function(msg) {
-        chart.options.data[1].dataPoints.push({
+        chart.options.data[0].dataPoints.push({
          x: msg["timestamp"] * 1000,
          y: msg["num_operations"],
          block: msg["block"], 
         });
-        chart.options.data[0].dataPoints.push({
+        chart.options.data[1].dataPoints.push({
          x: msg["timestamp"] * 1000,
          y: msg["num_transactions"],
          block: msg["block"], 
