@@ -10,7 +10,7 @@ room = "test"
 
 def run():
     socketio = SocketIO(message_queue='redis://')
-    testnet = BitShares(node="wss://testnet.bitshares.eu/ws")
+    testnet = BitShares(node="wss://node.testnet.bitshares.eu")
     chain = Blockchain(mode="head", bitshares_instance=testnet)
     print(chain.bitshares.rpc.url, flush=True)
     for block in chain.blocks():
