@@ -73,22 +73,24 @@ def on_join(room):
     # Send all the stored data for that room
     if room == "bts":
         blocks = BTSBlock
+        block_time = 3
     elif room == "test":
         blocks = TestBlock
+        block_time = 5
     else:
         blocks = SteemBlock
+        block_time = 3
     allblocks = [[
         b.timestamp,
         b.num_ops,
         b.num_txs,
         b.block_num
     ] for b in blocks.recent(1000)]
-    latestDelay = allblocks[-2][0] - allblocks[-1][0]
     socketio.emit(
         'init',
         {
             "data": sorted(allblocks, key=lambda x: x[0]),
-            "block_time": latestDelay
+            "block_time": block_time
         },
         namespace=namespace,
         room=room,
