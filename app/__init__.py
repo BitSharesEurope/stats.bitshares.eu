@@ -71,15 +71,7 @@ def on_join(room):
     log("joined " + room)
 
     # Send all the stored data for that room
-    if room == "bts":
-        blocks = BTSBlock
-        block_time = 3
-    elif room == "test":
-        blocks = TestBlock
-        block_time = 5
-    else:
-        blocks = SteemBlock
-        block_time = 3
+    block_time = 3
     allblocks = [[
         b.timestamp,
         b.num_ops,
