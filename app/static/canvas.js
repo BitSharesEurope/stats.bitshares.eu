@@ -1,11 +1,13 @@
 var chart = new CanvasJS.Chart("hchart",{
  height: 550, //in pixels
  axisX:{
+  title: "Time (UTC)",
   labelFontSize: 12,
   labelAngle: -60,
  },
  zoomEnabled: true,
  axisY:{
+  title: "Txs/Ops per <b>Block</b>",
   labelFontSize: 12,
  },
  data: [{
