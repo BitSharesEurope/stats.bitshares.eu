@@ -1,7 +1,7 @@
 var chart = new CanvasJS.Chart("hchart",{
  height: 550, //in pixels
  axisX:{
-  title: "Time (UTC)",
+  title: "Local Time",
   titleFontSize: 12,
   labelFontSize: 12,
   labelAngle: -60,
