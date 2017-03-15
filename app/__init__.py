@@ -109,7 +109,7 @@ def on_stats(room):
         func.max(blocks.num_ops).label("max_num_ops"),
         func.max(blocks.num_txs).label("max_num_txs"),
         func.sum(blocks.num_ops).label("sum_ops"),
-        func.sum(blocks.num_ops).label("sum_txs"),
+        func.sum(blocks.num_txs).label("sum_txs"),
     ).first()
 
     last = (
